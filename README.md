@@ -17,7 +17,8 @@ This command also creates a new folder in your current directory with the same n
     $ python manage.py startapp countries
 This command creates a folder with same name of application that has bas files for the application
 
-### Step 4:Config settings.py (config file)
+### Step 4: Config settings.py (config file)
+
     # countryapi/settings.py
     INSTALLED_APPS = [
         "django.contrib.admin",
@@ -29,6 +30,32 @@ This command creates a folder with same name of application that has bas files f
         ->"rest_framework",<-
         ->"countries",<-
     ]
+Django REST framework is part of Django. Django is just a framework designed for web development and DRF is the library used in Django to build RESTful APIs.
+
+### Step 5: Define fields of data (in models.py)
+
+    # countries/models.py
+    from django.db import models
+
+    class Country(models.Model):
+        name = models.CharField(max_length=100)
+        capital = models.CharField(max_length=100)
+        area = models.IntegerField(help_text="(in square kilometers)")
+
+This code defines a Country model. Django will use this model to create the database table and columns for the country data. Then run 2 below commands to update the database based on model
+
+    $ python manage.py makemigrations
+    Migrations for 'countries':
+      countries/migrations/0001_initial.py
+        - Create model Country
+
+    $ python manage.py migrate
+    Operations to perform:
+      Apply all migrations: admin, auth, contenttypes, countries, sessions
+    Running migrations:
+      Applying contenttypes.0001_initial... OK
+      Applying auth.0001_initial... OK
+      ...
 
 
     
