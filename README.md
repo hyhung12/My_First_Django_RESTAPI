@@ -15,7 +15,7 @@ This command also creates a new folder in your current directory with the same n
 ### Step 3: Create the application named countries
     
     $ python manage.py startapp countries
-This command creates a folder with same name of application that has bas files for the application
+This command creates a folder with same name of application that has bas files for the application. Make sure the directory is changed to countryapi 
 
 ### Step 4: Config settings.py (config file)
 
@@ -57,7 +57,77 @@ This code defines a Country model. Django will use this model to create the data
       Applying auth.0001_initial... OK
       ...
 
+"Django migrations" to create a new table in the database. Then using a Django fixture to load some data in the database.
+<br> Create a JSON file <countries.json> and save it in countries directory
 
+    $ python manage.py loaddata countries.json
+    Installed 3 object(s) from 1 fixture(s)
     
+### Step 6: Django REST framework 
+  
+Takes an existing Django model and converts it to JSON for a REST API. Thisis done by model serializers: tell DRF how to convert a model instance into JSON and what data to include.
+<br> Create a file called <serializers.py> in main application and add the below code:
+
+     # countries/serializers.py
+    from rest_framework import serializers
+    from .models import Country
+
+    class CountrySerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Country
+            fields = ["id", "name", "capital", "area"]
+            
+### Step 7: View/query data **
+
+Just like Django, Django REST framework uses views to query data from the database to display to the user.
+<br> No need to write from sratch, we can subclass DRF's ModelViewSet class, which has default views for common REST API operations.
+
+    # countries/views.py
+    from rest_framework import viewsets
+
+    from .models import Country
+    from .serializers import CountrySerializer
+
+    class CountryViewSet(viewsets.ModelViewSet):
+        serializer_class = CountrySerializer
+        queryset = Country.objects.all()
+       
+### Step 8: Map URL 
+
+Once the views are created, they need to be mapped to the appropriate URLs or endpoints. To do this, Django REST framework provides a DefaultRouter that will automatically generate URLs for a ModelViewSet.
+
+    # countries/urls.py
+    from django.urls import path, include
+    from rest_framework.routers import DefaultRouter
+
+    from .views import CountryViewSet
+
+    router = DefaultRouter()
+    router.register(r"countries", CountryViewSet)
+
+    urlpatterns = [
+        path("", include(router.urls))
+    ]
+    
+### Step 9: Update project's based urls.py to include all the countries URLs in the project
+In countryapi (config folder)
+
+    # countryapi/urls.py
+    from django.contrib import admin
+    from django.urls import path, include
+
+    urlpatterns = [
+        path("admin/", admin.site.urls),
+        path("", include("countries.urls")),
+    ]
+       
+### Step 10: Run
+
+    $ python manage.py runserver
+    
+The server is running
+
+    $ curl -i http://127.0.0.1:8000/countries/ -w '\n'
+
    
 
