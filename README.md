@@ -7,7 +7,7 @@ To use Django REST framework, Django project has to be created
 
     $ python -m pip install Django djangorestframework
     
-### Step 1: Project "countryapi" is created by using django-admin tool
+### Step 1: Create a new project "countryapi" by using django-admin tool
 
     $ django-admin startproject countryapi
 This command also creates a new folder in your current directory with the same name. This folder contains configurations and settings for the project
