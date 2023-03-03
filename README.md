@@ -3,21 +3,21 @@
 # My_First_Django_RESTAPI
 To use Django REST framework, Django project has to be created
 
-### Step 1: Install Django and djangorestframework with pip:
+### Step 0: Install Django and djangorestframework with pip
 
     $ python -m pip install Django djangorestframework
     
-### Step 2: Project "countryapi" is created by using django-admin tool
+### Step 1: Project "countryapi" is created by using django-admin tool
 
     $ django-admin startproject countryapi
 This command also creates a new folder in your current directory with the same name. This folder contains configurations and settings for the project
 
-### Step 3: Create the application named countries
+### Step 2: Create the application inside the project folder (change directory)
     
     $ python manage.py startapp countries
 This command creates a folder with same name of application that has bas files for the application. Make sure the directory is changed to countryapi 
 
-### Step 4: Config settings.py (config file)
+### Step 3: Config settings.py (config file)
 
     # countryapi/settings.py
     INSTALLED_APPS = [
@@ -32,7 +32,9 @@ This command creates a folder with same name of application that has bas files f
     ]
 Django REST framework is part of Django. Django is just a framework designed for web development and DRF is the library used in Django to build RESTful APIs.
 
-### Step 5: Define fields of data (in models.py)
+### Step 4: Define fields of data (2 steps) / Django migration
+First step, edit the models.py. Same as making fields in SQL ({'name': acbcd, 'capital': ABCD, 'area': 100})
+
 
     # countries/models.py
     from django.db import models
@@ -42,7 +44,9 @@ Django REST framework is part of Django. Django is just a framework designed for
         capital = models.CharField(max_length=100)
         area = models.IntegerField(help_text="(in square kilometers)")
 
-This code defines a Country model. Django will use this model to create the database table and columns for the country data. Then run 2 below commands to update the database based on model
+Second step, Django migration. Model class in python file does not create database table in the database. Migration does, new change to model -> change to database.
+
+![Migrate example](https://files.realpython.com/media/model_to_schema.4e4b8506dc26.png)
 
     $ python manage.py makemigrations
     Migrations for 'countries':
@@ -63,12 +67,17 @@ This code defines a Country model. Django will use this model to create the data
     $ python manage.py loaddata countries.json
     Installed 3 object(s) from 1 fixture(s)
     
-### Step 6: Django REST framework 
-  
-Takes an existing Django model and converts it to JSON for a REST API. Thisis done by model serializers: tell DRF how to convert a model instance into JSON and what data to include.
+### Step 5: Django fixture - Put some initial datas in the table
+Create a "abc.json" and put it in the application directory
+
+    $ python manage.py loaddata countries.json <- full absolute path
+    Installed 3 object(s) from 1 fixture(s)
+
+### Step 6: Serialization
+Takes an existing Django model and converts it to JSON for a REST API -> Done by model serializers: tell DRF how to convert a model instance into JSON and what data to include.
 <br> Create a file called <serializers.py> in main application and add the below code:
 
-     # countries/serializers.py
+    # countries/serializers.py
     from rest_framework import serializers
     from .models import Country
 
@@ -79,7 +88,7 @@ Takes an existing Django model and converts it to JSON for a REST API. Thisis do
             
 ### Step 7: View/query data **
 
-Just like Django, Django REST framework uses views to query data from the database to display to the user.
+Just like Django, Django REST framework uses "view" to query data from the database to display to the user.
 <br> No need to write from sratch, we can subclass DRF's ModelViewSet class, which has default views for common REST API operations.
 
     # countries/views.py
