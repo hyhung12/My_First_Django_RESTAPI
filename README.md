@@ -5,7 +5,7 @@ To use Django REST framework, Django project has to be created
 
 ### Step 0: Install Django and djangorestframework with pip
 
-    $ python -m pip install Django djangorestframework
+    $ python3 -m pip install Django djangorestframework
     
 ### Step 1: Create a new project "countryapi" by using django-admin tool
 
@@ -14,7 +14,7 @@ This command also creates a new folder in your current directory with the same n
 
 ### Step 2: Create the application inside the project folder (change directory)
     
-    $ python manage.py startapp countries
+    $ python3 manage.py startapp countries
 This command creates a folder with same name of application that has bas files for the application. Make sure the directory is changed to countryapi 
 
 ### Step 3: Config settings.py (config file)
@@ -48,12 +48,12 @@ Second step, Django migration. Model class in python file does not create databa
 
 ![Migrate example](https://files.realpython.com/media/model_to_schema.4e4b8506dc26.png)
 
-    $ python manage.py makemigrations
+    $ python3 manage.py makemigrations
     Migrations for 'countries':
       countries/migrations/0001_initial.py
         - Create model Country
 
-    $ python manage.py migrate
+    $ python3 manage.py migrate
     Operations to perform:
       Apply all migrations: admin, auth, contenttypes, countries, sessions
     Running migrations:
@@ -64,13 +64,13 @@ Second step, Django migration. Model class in python file does not create databa
 "Django migrations" to create a new table in the database. Then using a Django fixture to load some data in the database.
 <br> Create a JSON file <countries.json> and save it in countries directory
 
-    $ python manage.py loaddata countries.json
+    $ python3 manage.py loaddata countries.json
     Installed 3 object(s) from 1 fixture(s)
     
 ### Step 5: Django fixture - Put some initial datas in the table
 Create a "abc.json" and put it in the application directory
 
-    $ python manage.py loaddata countries.json <- full absolute path
+    $ python3 manage.py loaddata countries.json <- full absolute path
     Installed 3 object(s) from 1 fixture(s)
 
 ### Step 6: Serialization
@@ -132,7 +132,7 @@ In countryapi (config folder)
        
 ### Step 10: Run
 
-    $ python manage.py runserver
+    $ python3 manage.py runserver
     
 The server is running
 
